@@ -17,6 +17,6 @@ class PenjualanCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return new PenjualanResource($this->collection);
+        return PenjualanResource::collection($this->collection);
     }
 }

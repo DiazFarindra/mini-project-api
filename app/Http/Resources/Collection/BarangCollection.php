@@ -17,6 +17,6 @@ class BarangCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return new BarangResource($this->collection);
+        return BarangResource::collection($this->collection);
     }
 }
