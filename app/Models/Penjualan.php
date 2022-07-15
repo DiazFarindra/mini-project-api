@@ -33,4 +33,9 @@ class Penjualan extends Model
     {
         return $this->hasMany(ItemPenjualan::class, 'nota', 'id_nota');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'id_nota';
+    }
 }

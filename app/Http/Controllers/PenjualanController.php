@@ -50,11 +50,9 @@ class PenjualanController extends Controller
         }
 
         // subtotal for penjualan
-        $subtotal = 0; // flag variable to store subtotal
-        $subtotal = Barang::query()->whereIn('kode', $kode)->get()->map(function ($item) use ($qty, $subtotal) {
-            collect($qty)->map(function ($qty) use ($item, $subtotal) {
-                return $subtotal += $item->harga * $qty;
-            });
+        $harga = Barang::query()->whereIn('kode', $kode)->pluck('harga');
+        $subtotal = collect($harga)->reduce(function ($carry, $value, $key) use ($qty) {
+            return $carry + ($value * $qty[$key]);
         });
         $data['subtotal'] = $subtotal;
 
@@ -68,7 +66,9 @@ class PenjualanController extends Controller
 
             // insert item penjualan data
             $result = data_fill($barang, '*.nota', $commit->id_nota);
-            ItemPenjualan::create($result);
+            $result = data_fill($result, '*.created_at', now());
+            $result = data_fill($result, '*.updated_at', now());
+            ItemPenjualan::query()->insert($result);
         });
 
         return response()->json([
@@ -116,11 +116,9 @@ class PenjualanController extends Controller
         }
 
         // subtotal for penjualan
-        $subtotal = 0; // flag variable to store subtotal
-        $subtotal = Barang::query()->whereIn('kode', $kode)->get()->map(function ($item) use ($qty, $subtotal) {
-            collect($qty)->map(function ($qty) use ($item, $subtotal) {
-                return $subtotal += $item->harga * $qty;
-            });
+        $harga = Barang::query()->whereIn('kode', $kode)->pluck('harga');
+        $subtotal = collect($harga)->reduce(function ($carry, $value, $key) use ($qty) {
+            return $carry + ($value * $qty[$key]);
         });
         $data['subtotal'] = $subtotal;
 
@@ -134,9 +132,16 @@ class PenjualanController extends Controller
 
             // insert item penjualan data
             ItemPenjualan::query()->where('nota', $penjualan->id_nota)->delete();
-            $result = data_fill($barang, '*.nota', $penjualan->id_nota);
-            ItemPenjualan::create($result);
+            $result = data_fill($barang, '*.nota', $commit->id_nota);
+            $result = data_fill($result, '*.created_at', now());
+            $result = data_fill($result, '*.updated_at', now());
+            ItemPenjualan::query()->insert($result);
         });
+
+        return response()->json([
+            'status' => 'OK',
+            'message' => 'Data berhasil diubah',
+        ]);
     }
 
     /**

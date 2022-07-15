@@ -31,8 +31,7 @@ class PenjualanRequest extends FormRequest
             'kode_pelanggan' => [$conditionalRule, 'string', 'exists:pelanggan,id_pelanggan'],
 
             'barang' => [$conditionalRule, 'array', 'min:1'],
-            'barang.*' => [$conditionalRule, 'in_array:kode_barang,qty'],
-            'barang.*.kode_barang' => [$conditionalRule, 'string', 'exists:barang,kode'],
+            'barang.*.kode_barang' => [$conditionalRule, 'string', Rule::exists('barang', 'kode')],
             'barang.*.qty' => [$conditionalRule, 'integer'],
         ];
     }
