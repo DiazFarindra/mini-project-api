@@ -11,6 +11,8 @@ class ItemPenjualan extends Model
 
     protected $table = 'item_penjualan';
 
+    protected $guarded = ['id'];
+
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'kode_barang', 'kode');

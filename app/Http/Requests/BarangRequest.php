@@ -29,7 +29,7 @@ class BarangRequest extends FormRequest
         return [
             'nama' => [$conditionalRule, 'string', 'max:255'],
             'kategori' => [$conditionalRule, 'string', 'max:255'],
-            'harga' => [$conditionalRule, 'string', 'max:255'],
+            'harga' => [$conditionalRule, 'integer'],
         ];
     }
 }
