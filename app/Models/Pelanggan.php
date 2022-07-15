@@ -12,12 +12,7 @@ class Pelanggan extends Model
 
     protected $table = 'pelanggan';
 
-    protected $fillable = [
-        'id_pelanggan',
-        'nama',
-        'domisili',
-        'jenis_kelamin',
-    ];
+    protected $guarded = ['id'];
 
     protected $casts = [
         'jenis_kelamin' => JenisKelamin::class,
@@ -30,8 +25,13 @@ class Pelanggan extends Model
         // generate id_pelanggan incremented
         static::creating(function ($model) {
             $increment = static::count();
-            $idPelanggan = 'PELANGGAN_' . $increment++;
-            $model->id_pelanggan = $idPelanggan;
+            $value = 'PELANGGAN_' . $increment++;
+            $model->id_pelanggan = $value;
         });
+    }
+
+    public function penjualan()
+    {
+        return $this->hasMany(Penjualan::class, 'kode_pelanggan', 'id_pelanggan');
     }
 }
