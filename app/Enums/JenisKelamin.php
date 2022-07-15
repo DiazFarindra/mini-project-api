@@ -2,8 +2,8 @@
 
 namespace App\Enums;
 
-enum JenisKelamin
+enum JenisKelamin: string
 {
-    case PRIA;
-    case WANITA;
+    case PRIA = 'pria';
+    case WANITA = 'wanita';
 }
