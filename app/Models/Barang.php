@@ -23,4 +23,9 @@ class Barang extends Model
             $model->kode = $value;
         });
     }
+
+    public function item_penjualan()
+    {
+        return $this->hasMany(ItemPenjualan::class, 'kode_barang', 'kode');
+    }
 }
