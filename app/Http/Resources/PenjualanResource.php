@@ -24,6 +24,7 @@ class PenjualanResource extends JsonResource
             'updated_at' => $this->updated_at,
 
             'pelanggan' => new PelangganResource($this->whenLoaded('pelanggan')),
+            'item_penjualan' => new ItemPenjualanResource($this->whenLoaded('item_penjualan')),
         ];
     }
 }
