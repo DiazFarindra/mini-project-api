@@ -86,7 +86,7 @@ class PenjualanController extends Controller
     public function show(Penjualan $penjualan)
     {
         return response()->json([
-            'penjualan' => new PenjualanResource($penjualan),
+            'penjualan' => new PenjualanResource($penjualan->load('item_penjualan')),
         ]);
     }
 

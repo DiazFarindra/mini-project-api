@@ -19,8 +19,13 @@ class Barang extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $increment = static::count();
-            $value = 'BRG_' . $increment++;
+            if (static::count() < 1) {
+                $model->kode = 'BRG_1';
+                return;
+            }
+
+            $increment = substr(static::latest()->first()->kode, -1);
+            $value = 'BRG_' . $increment + 1;
             $model->kode = $value;
         });
     }

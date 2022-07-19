@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Collection\ItemPenjualanCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PenjualanResource extends JsonResource
@@ -24,7 +25,7 @@ class PenjualanResource extends JsonResource
             'updated_at' => $this->updated_at,
 
             'pelanggan' => new PelangganResource($this->whenLoaded('pelanggan')),
-            'item_penjualan' => new ItemPenjualanResource($this->whenLoaded('item_penjualan')),
+            'item_penjualan' => new ItemPenjualanCollection($this->whenLoaded('item_penjualan')),
         ];
     }
 }

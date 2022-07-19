@@ -18,8 +18,13 @@ class Penjualan extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $increment = static::count();
-            $value = 'NOTA_' . $increment++;
+            if (static::count() < 1) {
+                $model->id_nota = 'NOTA_1';
+                return;
+            }
+
+            $increment = substr(static::latest()->first()->id_nota, -1);
+            $value = 'NOTA_' . $increment + 1;
             $model->id_nota = $value;
         });
     }

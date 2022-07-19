@@ -2,10 +2,13 @@
 
 namespace App\Http\Resources\Collection;
 
+use App\Http\Resources\ItemPenjualanResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ItemPenjualanCollection extends ResourceCollection
 {
+    public static $wrap = 'item_penjualan';
+
     /**
      * Transform the resource collection into an array.
      *
@@ -14,6 +17,6 @@ class ItemPenjualanCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return ItemPenjualanResource::collection($this->collection);
     }
 }

@@ -23,10 +23,14 @@ class Pelanggan extends Model
     {
         parent::boot();
 
-        // generate id_pelanggan incremented
         static::creating(function ($model) {
-            $increment = static::count();
-            $value = 'PELANGGAN_' . $increment++;
+            if (static::count() < 1) {
+                $model->id_pelanggan = 'PELANGGAN_1';
+                return;
+            }
+
+            $increment = substr(static::latest()->first()->id_pelanggan, -1);
+            $value = 'PELANGGAN_' . $increment + 1;
             $model->id_pelanggan = $value;
         });
     }
