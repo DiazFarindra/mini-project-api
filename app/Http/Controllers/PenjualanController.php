@@ -39,21 +39,27 @@ class PenjualanController extends Controller
         $barang = []; // array to store barang data
         $kode = []; // to store kode barang
         $qty = []; // to store qty barang
+        $subtotal = 0; // flag variable
         foreach ($request->barang as $value) {
             $barang[] = [
                 'kode_barang' => $value['kode_barang'],
                 'qty' => $value['qty'],
             ];
 
+            // subtotal
+            $harga = Barang::query()->where('kode', $value['kode_barang'])->first()->harga;
+            $total = $harga * $value['qty'];
+            $subtotal += $total;
+
             $kode[] = $value['kode_barang'];
             $qty[] = $value['qty'];
         }
 
-        // subtotal for penjualan
-        $harga = Barang::query()->whereIn('kode', $kode)->pluck('harga');
-        $subtotal = collect($harga)->reduce(function ($carry, $value, $key) use ($qty) {
-            return $carry + ($value * $qty[$key]);
-        });
+        // subtotal for penjualan (deprecated)
+        // $harga = Barang::query()->whereIn('kode', $kode)->pluck('harga');
+        // $subtotal = collect($harga)->reduce(function ($carry, $value, $key) use ($qty) {
+        //     return $carry + ($value * $qty[$key]);
+        // });
         $data['subtotal'] = $subtotal;
 
         DB::transaction(function () use ($data, $barang) {
@@ -105,21 +111,27 @@ class PenjualanController extends Controller
         $barang = []; // array to store barang data
         $kode = []; // to store kode barang
         $qty = []; // to store qty barang
+        $subtotal = 0; // flag variable
         foreach ($request->barang as $value) {
             $barang[] = [
                 'kode_barang' => $value['kode_barang'],
                 'qty' => $value['qty'],
             ];
 
+            // subtotal
+            $harga = Barang::query()->where('kode', $value['kode_barang'])->first()->harga;
+            $total = $harga * $value['qty'];
+            $subtotal += $total;
+
             $kode[] = $value['kode_barang'];
             $qty[] = $value['qty'];
         }
 
-        // subtotal for penjualan
-        $harga = Barang::query()->whereIn('kode', $kode)->pluck('harga');
-        $subtotal = collect($harga)->reduce(function ($carry, $value, $key) use ($qty) {
-            return $carry + ($value * $qty[$key]);
-        });
+        // subtotal for penjualan (deprecated)
+        // $harga = Barang::query()->whereIn('kode', $kode)->pluck('harga');
+        // $subtotal = collect($harga)->reduce(function ($carry, $value, $key) use ($qty) {
+        //     return $carry + ($value * $qty[$key]);
+        // });
         $data['subtotal'] = $subtotal;
 
         DB::transaction(function () use ($data, $barang, $penjualan) {
